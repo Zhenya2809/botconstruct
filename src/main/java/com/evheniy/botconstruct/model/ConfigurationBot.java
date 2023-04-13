@@ -8,10 +8,16 @@ import lombok.Data;
 @Entity
 @Data
 public class ConfigurationBot {
-    private String greatingMessage;
-    private String helpMessage;
     @Id
     private Long id;
+    private String greetingMessage;
+    private String helpMessage;
+    private String imageURL;
+    private float longitude;
+    private float latitude;
+    private String codeFromBD;
     @OneToOne(mappedBy = "configurationBot")
     private Token token;
+
+
 }

@@ -16,16 +16,17 @@ public class User {
     private String firstName;
     @Column(name = "lastName")
     private String lastName;
-
     @Column(name = "globalState")
     public String globalState;
+    @OneToOne(mappedBy = "user")
+    private Message message;
+
 
     public User(Long chatId, String firstName, String lastName) {
         this.chatId = chatId;
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
 
 //    @Column(name = "localState")
 //    private String localeState;
@@ -39,8 +40,6 @@ public class User {
 //        ONE,
 //        TWO,
 //    }
-
-
     @Override
     public String toString() {
         return String.format("chatID:: ,%s, firstName:: ,%s,  lastName: ,%s,", this.chatId, this.firstName, this.lastName);
