@@ -2,17 +2,26 @@ package com.evheniy.botconstruct.model;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+import java.util.Set;
+
+@Getter
+@Setter
 @Entity
-public class Token {
-    private String token;
+public class TBots {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToOne(cascade = CascadeType.ALL)
+    private String token;
+    @OneToOne(mappedBy = "tbots", cascade = CascadeType.ALL)
     private ConfigurationBot configurationBot;
+
+    @OneToMany(mappedBy = "tBots", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Command> commands;
+
     @Override
     public String toString() {
         return "Token{" +

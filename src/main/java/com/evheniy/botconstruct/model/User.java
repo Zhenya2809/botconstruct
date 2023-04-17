@@ -1,47 +1,31 @@
 package com.evheniy.botconstruct.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+
+@Getter
+@Setter
 @Entity
-@Data
-@NoArgsConstructor
-@Table(name = "constrUser")
+@Table(name = "telegram_users")
 public class User {
     @Id
-    @Column(name = "chatId", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
     private Long chatId;
-    @Column(name = "firstName")
+
     private String firstName;
-    @Column(name = "lastName")
+
     private String lastName;
-    @Column(name = "globalState")
-    public String globalState;
-    @OneToOne(mappedBy = "user")
-    private Message message;
 
+    private String globalState;
 
-    public User(Long chatId, String firstName, String lastName) {
-        this.chatId = chatId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-//    @Column(name = "localState")
-//    private String localeState;
-//    @Column(name = "email")
-//    private String email;
-//    @Column(name = "phone")
-//    private String phone;
-//    @Column(name = "role", columnDefinition = "varchar(20) default 'USER'")
-//    private String role;
-//    public enum botstate {
-//        ONE,
-//        TWO,
-//    }
-    @Override
-    public String toString() {
-        return String.format("chatID:: ,%s, firstName:: ,%s,  lastName: ,%s,", this.chatId, this.firstName, this.lastName);
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Message> messages;
 }
