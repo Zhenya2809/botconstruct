@@ -1,4 +1,4 @@
-package com.evheniy.botconstruct;
+package com.evheniy.botconstruct.botshandler;
 
 import com.pengrad.telegrambot.model.Update;
 

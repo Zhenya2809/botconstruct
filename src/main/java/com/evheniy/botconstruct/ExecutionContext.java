@@ -1,5 +1,6 @@
 package com.evheniy.botconstruct;
 
+import com.evheniy.botconstruct.Service.ReplyService;
 import lombok.Data;
 
 @Data

@@ -1,8 +1,8 @@
-package com.evheniy.botconstruct.botshandler;
+package com.evheniy.botconstruct.botshandler.impl;
 
 import com.evheniy.botconstruct.ExecutionContext;
-import com.evheniy.botconstruct.TelegramReplyService;
-import com.evheniy.botconstruct.UpdateHandler;
+import com.evheniy.botconstruct.Service.impl.TelegramReplyService;
+import com.evheniy.botconstruct.botshandler.UpdateHandler;
 import com.evheniy.botconstruct.commands.CommandHandler;
 import com.evheniy.botconstruct.commands.ReplyCommandHandler;
 import com.evheniy.botconstruct.model.Command;

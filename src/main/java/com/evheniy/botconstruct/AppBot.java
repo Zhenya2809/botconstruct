@@ -1,6 +1,6 @@
 package com.evheniy.botconstruct;
 
-import com.evheniy.botconstruct.botshandler.TelegramUpdateHandler;
+import com.evheniy.botconstruct.botshandler.impl.TelegramUpdateHandler;
 import com.evheniy.botconstruct.model.Command;
 import com.evheniy.botconstruct.model.ConfigurationBot;
 import com.evheniy.botconstruct.model.TBots;

@@ -1,4 +1,4 @@
-package com.evheniy.botconstruct;
+package com.evheniy.botconstruct.Service;
 
 import lombok.Data;
 
