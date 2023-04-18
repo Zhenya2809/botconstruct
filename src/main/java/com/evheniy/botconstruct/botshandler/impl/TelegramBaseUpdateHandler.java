@@ -2,12 +2,12 @@ package com.evheniy.botconstruct.botshandler.impl;
 
 import com.evheniy.botconstruct.ExecutionContext;
 import com.evheniy.botconstruct.Service.impl.TelegramReplyService;
-import com.evheniy.botconstruct.botshandler.UpdateHandler;
+import com.evheniy.botconstruct.botshandler.BaseUpdateHandler;
 import com.evheniy.botconstruct.commands.CommandHandler;
 import com.evheniy.botconstruct.commands.ReplyCommandHandler;
 import com.evheniy.botconstruct.model.Command;
 import com.evheniy.botconstruct.model.Message;
-import com.evheniy.botconstruct.model.TBots;
+import com.evheniy.botconstruct.model.AllBots;
 import com.evheniy.botconstruct.model.User;
 import com.evheniy.botconstruct.repository.*;
 import com.pengrad.telegrambot.TelegramBot;
@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @Data
 @Slf4j
-public class TelegramUpdateHandler implements UpdateHandler {
+public class TelegramBaseUpdateHandler implements BaseUpdateHandler {
 
 
     private UserRepository userRepository;
@@ -30,7 +30,7 @@ public class TelegramUpdateHandler implements UpdateHandler {
 
     private CommandRepository commandRepository;
 
-    private TBots tBots;
+    private AllBots allBots;
 
     private TelegramBot bot;
 
@@ -55,13 +55,13 @@ public class TelegramUpdateHandler implements UpdateHandler {
                     Message message = new Message();
                     message.setContent(messageText);
                     message.setUser(user);
-                    message.setToken(tBots.getToken());
+                    message.setToken(allBots.getToken());
                     messageRepository.save(message);
                 } else {
                     User user = byChatId.get();
                     Message message = new Message();
                     message.setContent(messageText);
-                    message.setToken(tBots.getToken());
+                    message.setToken(allBots.getToken());
                     message.setUser(user);
                     messageRepository.save(message);
                 }

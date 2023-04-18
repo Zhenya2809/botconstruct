@@ -1,9 +1,9 @@
 package com.evheniy.botconstruct;
 
-import com.evheniy.botconstruct.botshandler.impl.TelegramUpdateHandler;
+import com.evheniy.botconstruct.botshandler.impl.TelegramBaseUpdateHandler;
 import com.evheniy.botconstruct.model.Command;
 import com.evheniy.botconstruct.model.ConfigurationBot;
-import com.evheniy.botconstruct.model.TBots;
+import com.evheniy.botconstruct.model.AllBots;
 import com.evheniy.botconstruct.repository.*;
 import com.pengrad.telegrambot.TelegramBot;
 import lombok.Data;
@@ -26,7 +26,7 @@ public class AppBot {
     @Autowired
     private MessageRepository messageRepository;
     @Autowired
-    private TokenRepository tokenRepository;
+    private AllBotsRepository allBotsRepository;
     @Autowired
     private ConfigurationBotRepository configurationBotRepository;
     @Autowired
@@ -39,21 +39,23 @@ public class AppBot {
     public void addNewBot() {
         String tokenId = "6125153463:AAEq0IIJNvufXmitJfgiwq69V6HrXnd8ifc";
 //        token.setToken("5268155371:AAG3RgrkWWJoVAprsablbLDSUQRkydn2Ftc");
-        Optional<TBots> tokenByToken = tokenRepository.findTokenByToken(tokenId);
+        Optional<AllBots> tokenByToken = allBotsRepository.findTokenByToken(tokenId);
         if (tokenByToken.isEmpty()) {
-            TBots tBots = new TBots();
+            AllBots allBots = new AllBots();
 
-            tBots.setToken(tokenId);
+            allBots.setBotType(BotType.TELEGRAM);
+
+            allBots.setToken(tokenId);
 
             Command command = new Command();
             command.setCommandText("/help");
             command.setReplyText("чим можу допомгти?");
             Set<Command> commandSet = new HashSet<>();
-            command.setTBots(tBots);
+            command.setAllBots(allBots);
             commandSet.add(command);
 
 
-            tBots.setCommands(commandSet);
+            allBots.setCommands(commandSet);
 
             ConfigurationBot configurationBot = new ConfigurationBot();
             configurationBot.setCodeFromBD("code from db");
@@ -62,42 +64,45 @@ public class AppBot {
             configurationBot.setHelpMessage("help message1");
             configurationBot.setGreetingMessage("hello message");
             configurationBot.setImageURL("this is image url");
-            configurationBot.setTbots(tBots);
+            configurationBot.setAllBots(allBots);
 
-            tBots.setConfigurationBot(configurationBot);
+            allBots.setConfigurationBot(configurationBot);
 
-            tokenRepository.save(tBots);
+            allBotsRepository.save(allBots);
         }
     }
 
     @PostConstruct
     public void init() {
         addNewBot();
-        List<TBots> all = tokenRepository.findAll();
+        List<AllBots> all = allBotsRepository.findAll();
         System.out.println(all);
-        for (TBots tBots : all) {
-            ConfigurationBot configBot = configurationBotRepository.findByTbots(tBots);
+        for (AllBots allBots : all) {
+            ConfigurationBot configBot = configurationBotRepository.findByAllBots(allBots);
             if (configBot != null) {
+                switch (allBots.getBotType()) {
+                    case TELEGRAM -> {
+                        bot = BotConstructor.createBot(allBots.getToken(), null);
+                        allBots.setConfigurationBot(configBot);
+                        TelegramBaseUpdateHandler telegramUpdateHandler = new TelegramBaseUpdateHandler();
+                        telegramUpdateHandler.setAllBots(allBots);
+                        telegramUpdateHandler.setUserRepository(userRepository);
+                        telegramUpdateHandler.setMessageRepository(messageRepository);
+                        telegramUpdateHandler.setCommandRepository(commandRepository);
+                        telegramUpdateHandler.setBot(bot);
+                        MyUpdatesListener updatesListener = new MyUpdatesListener(telegramUpdateHandler);
+                        updatesListener.setBot(bot);
+                        updatesListener.setAllBots(allBots);
+                        updatesListener.setCommandRepository(commandRepository);
+                        updatesListener.setUserRepository(userRepository);
+                        updatesListener.setMessageRepository(messageRepository);
+                        bot.setUpdatesListener(updatesListener);
+                    }
+                    case VIBER -> log.error("для вайберу ніхуя немає");
+                    case WHATSAPP -> log.error("для вотсапа ніхуя немає");
+                    default -> throw new IllegalArgumentException("Непідтримуваний тип бота: " + allBots.getBotType());
+                }
 
-                bot = BotConstructor.createBot(tBots.getToken(), null);
-                tBots.setConfigurationBot(configBot);
-
-                TelegramUpdateHandler telegramUpdateHandler = new TelegramUpdateHandler();
-                telegramUpdateHandler.setTBots(tBots);
-                telegramUpdateHandler.setUserRepository(userRepository);
-                telegramUpdateHandler.setMessageRepository(messageRepository);
-                telegramUpdateHandler.setCommandRepository(commandRepository);
-                telegramUpdateHandler.setBot(bot);
-
-                MyUpdatesListener updatesListener = new MyUpdatesListener(telegramUpdateHandler);
-                updatesListener.setBot(bot);
-                updatesListener.setTBots(tBots);
-                updatesListener.setCommandRepository(commandRepository);
-                updatesListener.setUserRepository(userRepository);
-                updatesListener.setMessageRepository(messageRepository);
-
-
-                bot.setUpdatesListener(updatesListener);
             }
         }
     }

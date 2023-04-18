@@ -15,6 +15,6 @@ public class Command {
     private String replyText;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tBots_id")
-    private TBots tBots;
+    @JoinColumn(name = "allBots_id")
+    private AllBots allBots;
 }

@@ -1,8 +1,8 @@
 package com.evheniy.botconstruct;
 
-import com.evheniy.botconstruct.botshandler.impl.TelegramUpdateHandler;
-import com.evheniy.botconstruct.botshandler.UpdateHandler;
-import com.evheniy.botconstruct.model.TBots;
+import com.evheniy.botconstruct.botshandler.impl.TelegramBaseUpdateHandler;
+import com.evheniy.botconstruct.botshandler.BaseUpdateHandler;
+import com.evheniy.botconstruct.model.AllBots;
 import com.evheniy.botconstruct.repository.CommandRepository;
 import com.evheniy.botconstruct.repository.MessageRepository;
 import com.evheniy.botconstruct.repository.UserRepository;
@@ -21,10 +21,10 @@ import java.util.List;
 @NoArgsConstructor
 public class MyUpdatesListener implements UpdatesListener {
 
-    private UpdateHandler updateHandler;
+    private BaseUpdateHandler baseUpdateHandler;
 
-    public MyUpdatesListener(UpdateHandler updateHandler) {
-        this.updateHandler = updateHandler;
+    public MyUpdatesListener(BaseUpdateHandler baseUpdateHandler) {
+        this.baseUpdateHandler = baseUpdateHandler;
     }
 
     private UserRepository userRepository;
@@ -32,16 +32,16 @@ public class MyUpdatesListener implements UpdatesListener {
 
     private CommandRepository commandRepository;
     private TelegramBot bot;
-    private TBots tBots;
-    private TelegramUpdateHandler telegramUpdateHandler;
+    private AllBots allBots;
+    private TelegramBaseUpdateHandler telegramUpdateHandler;
 
 
     @Override
     public int process(List<Update> updates) {
         try {
 
-            if (updateHandler != null) {
-                updateHandler.processUpdates(updates);
+            if (baseUpdateHandler != null) {
+                baseUpdateHandler.processUpdates(updates);
             } else {
                 System.err.println("UpdateHandler не ініціалізований");
             }
