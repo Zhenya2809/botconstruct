@@ -2,7 +2,6 @@ package com.evheniy.botconstruct.model;
 
 import jakarta.persistence.*;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

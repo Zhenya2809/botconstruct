@@ -7,7 +7,7 @@ import com.evheniy.botconstruct.commands.CommandHandler;
 import com.evheniy.botconstruct.commands.ReplyCommandHandler;
 import com.evheniy.botconstruct.model.Command;
 import com.evheniy.botconstruct.model.Message;
-import com.evheniy.botconstruct.model.AllBots;
+import com.evheniy.botconstruct.model.BotsData;
 import com.evheniy.botconstruct.model.User;
 import com.evheniy.botconstruct.repository.*;
 import com.pengrad.telegrambot.TelegramBot;
@@ -30,7 +30,7 @@ public class TelegramBaseUpdateHandler implements BaseUpdateHandler {
 
     private CommandRepository commandRepository;
 
-    private AllBots allBots;
+    private BotsData botsData;
 
     private TelegramBot bot;
 
@@ -55,13 +55,13 @@ public class TelegramBaseUpdateHandler implements BaseUpdateHandler {
                     Message message = new Message();
                     message.setContent(messageText);
                     message.setUser(user);
-                    message.setToken(allBots.getToken());
+                    message.setToken(botsData.getToken());
                     messageRepository.save(message);
                 } else {
                     User user = byChatId.get();
                     Message message = new Message();
                     message.setContent(messageText);
-                    message.setToken(allBots.getToken());
+                    message.setToken(botsData.getToken());
                     message.setUser(user);
                     messageRepository.save(message);
                 }

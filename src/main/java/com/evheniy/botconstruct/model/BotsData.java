@@ -1,17 +1,17 @@
 package com.evheniy.botconstruct.model;
 
 
-import com.evheniy.botconstruct.BotType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
-public class AllBots {
+public class BotsData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,17 +19,20 @@ public class AllBots {
 
     private String token;
 
-    @OneToOne(mappedBy = "allBots", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "botsData", cascade = CascadeType.ALL)
     private ConfigurationBot configurationBot;
 
-    @OneToMany(mappedBy = "allBots", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "botsData", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Command> commands;
 
     @Enumerated(EnumType.STRING)
     private BotType botType;
 
+    private String webhookUrl;
 
+    private String botName;
 
+    private String botAvatarUrl;
 
 
     @Override

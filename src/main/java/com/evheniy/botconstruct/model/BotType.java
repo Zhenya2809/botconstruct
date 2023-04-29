@@ -1,4 +1,4 @@
-package com.evheniy.botconstruct;
+package com.evheniy.botconstruct.model;
 
 public enum BotType {
     TELEGRAM,

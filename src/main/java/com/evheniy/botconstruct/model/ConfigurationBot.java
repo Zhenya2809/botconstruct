@@ -18,8 +18,8 @@ public class ConfigurationBot {
     private float latitude;
     private String codeFromBD;
     @OneToOne
-    @JoinColumn(name = "allBots_id", referencedColumnName = "id")
-    private AllBots allBots;
+    @JoinColumn(name = "botsData_id", referencedColumnName = "id")
+    private BotsData botsData;
 
 
 }
