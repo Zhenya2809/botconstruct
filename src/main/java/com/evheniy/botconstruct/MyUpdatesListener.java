@@ -5,7 +5,7 @@ import com.evheniy.botconstruct.botshandler.BaseUpdateHandler;
 import com.evheniy.botconstruct.model.BotsData;
 import com.evheniy.botconstruct.repository.CommandRepository;
 import com.evheniy.botconstruct.repository.MessageRepository;
-import com.evheniy.botconstruct.repository.UserRepository;
+import com.evheniy.botconstruct.repository.BotUserRepository;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
@@ -27,7 +27,7 @@ public class MyUpdatesListener implements UpdatesListener {
         this.baseUpdateHandler = baseUpdateHandler;
     }
 
-    private UserRepository userRepository;
+    private BotUserRepository botUserRepository;
     private MessageRepository messageRepository;
 
     private CommandRepository commandRepository;

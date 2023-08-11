@@ -17,10 +17,10 @@ public class ViberBotStrategy implements BotStrategy {
     public void setupBot(BotsData botsData, AppBot appBot) {
 
         ViberBot viberBot = new ViberBot(new BotProfile(botsData.getBotName(), botsData.getBotAvatarUrl()), botsData.getToken());
-        ViberBaseUpdateHandler viberUpdateHandler = new ViberBaseUpdateHandler(botsData.getToken(), appBot);
+        ViberBaseUpdateHandler viberUpdateHandler = new ViberBaseUpdateHandler(botsData, appBot);
         viberBot.onMessageReceived(viberUpdateHandler);
         viberBot.setWebhook(botsData.getWebhookUrl());
-
+//        viberBot.incoming()
         log.info("viber bot started");
     }
 }

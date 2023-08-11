@@ -5,10 +5,10 @@ import com.evheniy.botconstruct.Service.impl.TelegramReplyService;
 import com.evheniy.botconstruct.botshandler.BaseUpdateHandler;
 import com.evheniy.botconstruct.commands.CommandHandler;
 import com.evheniy.botconstruct.commands.ReplyCommandHandler;
+import com.evheniy.botconstruct.model.BotUser;
 import com.evheniy.botconstruct.model.Command;
 import com.evheniy.botconstruct.model.Message;
 import com.evheniy.botconstruct.model.BotsData;
-import com.evheniy.botconstruct.model.User;
 import com.evheniy.botconstruct.repository.*;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class TelegramBaseUpdateHandler implements BaseUpdateHandler {
 
 
-    private UserRepository userRepository;
+    private BotUserRepository botUserRepository;
 
     private MessageRepository messageRepository;
 
@@ -43,26 +43,27 @@ public class TelegramBaseUpdateHandler implements BaseUpdateHandler {
                 String messageText = update.message().text();
                 long chatId = update.message().chat().id();
 
-                Optional<User> byChatId = userRepository.findByChatId(chatId);
+
+                Optional<BotUser> byChatId = botUserRepository.findByChatId(chatId);
                 if (byChatId.isEmpty()) {
 
-                    User user = new User();
-                    user.setChatId(chatId);
-                    user.setFirstName(update.message().from().firstName());
-                    user.setLastName(update.message().from().lastName());
-                    userRepository.save(user);
+                    BotUser botUser = new BotUser();
+                    botUser.setChatId(chatId);
+                    botUser.setFirstName(update.message().from().firstName());
+                    botUser.setLastName(update.message().from().lastName());
+                    botUserRepository.save(botUser);
 
                     Message message = new Message();
                     message.setContent(messageText);
-                    message.setUser(user);
-                    message.setToken(botsData.getToken());
+                    message.setBotUser(botUser);
+                    message.setBotsData(botsData);
                     messageRepository.save(message);
                 } else {
-                    User user = byChatId.get();
+                    BotUser botUser = byChatId.get();
                     Message message = new Message();
                     message.setContent(messageText);
-                    message.setToken(botsData.getToken());
-                    message.setUser(user);
+                    message.setBotsData(botsData);
+                    message.setBotUser(botUser);
                     messageRepository.save(message);
                 }
 

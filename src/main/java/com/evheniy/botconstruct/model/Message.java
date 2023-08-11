@@ -1,14 +1,7 @@
 package com.evheniy.botconstruct.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,9 +16,11 @@ public class Message {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private String token;
+    @ManyToOne
+    @JoinColumn(name = "bots_data_id")
+    private BotsData botsData;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "botUser_id")
+    private BotUser botUser;
 }

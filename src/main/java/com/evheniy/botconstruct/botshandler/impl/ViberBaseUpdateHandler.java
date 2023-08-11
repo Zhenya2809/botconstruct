@@ -1,10 +1,11 @@
 package com.evheniy.botconstruct.botshandler.impl;
 
 import com.evheniy.botconstruct.AppBot;
+import com.evheniy.botconstruct.model.BotsData;
 import com.evheniy.botconstruct.model.Message;
-import com.evheniy.botconstruct.model.User;
+import com.evheniy.botconstruct.model.BotUser;
 import com.evheniy.botconstruct.repository.MessageRepository;
-import com.evheniy.botconstruct.repository.UserRepository;
+import com.evheniy.botconstruct.repository.BotUserRepository;
 import com.viber.bot.event.callback.OnMessageReceived;
 import com.viber.bot.event.incoming.IncomingMessageEvent;
 import com.viber.bot.message.TextMessage;
@@ -14,39 +15,40 @@ import java.util.Optional;
 
 public class ViberBaseUpdateHandler implements OnMessageReceived {
 
-    private final String authToken;
+    private final BotsData botsData;
     private final AppBot appBot;
 
-    public ViberBaseUpdateHandler(String authToken, AppBot appBot) {
-        this.authToken = authToken;
+
+    public ViberBaseUpdateHandler(BotsData botsData, AppBot appBot) {
+        this.botsData = botsData;
         this.appBot = appBot;
     }
 
     @Override
     public void messageReceived(IncomingMessageEvent event, com.viber.bot.message.Message message, Response response) {
-        UserRepository userRepository = appBot.getUserRepository();
+        BotUserRepository botUserRepository = appBot.getBotUserRepository();
         MessageRepository messageRepository = appBot.getMessageRepository();
 
         String senderId = event.getSender().getId();
-        Optional<User> userOptional = userRepository.findByChatId(Long.valueOf(senderId));
+        Optional<BotUser> userOptional = botUserRepository.findByChatId(Long.valueOf(senderId));
 
         if (userOptional.isEmpty()) {
-            User user = new User();
-            user.setChatId(Long.valueOf(senderId));
-            user.setFirstName(event.getSender().getName());
-            userRepository.save(user);
+            BotUser botUser = new BotUser();
+            botUser.setChatId(Long.valueOf(senderId));
+            botUser.setFirstName(event.getSender().getName());
+            botUserRepository.save(botUser);
 
             Message savedMessage = new Message();
             savedMessage.setContent(((TextMessage) message).getText());
-            savedMessage.setUser(user);
-            savedMessage.setToken(authToken);
+            savedMessage.setBotUser(botUser);
+            savedMessage.setBotsData(botsData);
             messageRepository.save(savedMessage);
         } else {
-            User user = userOptional.get();
+            BotUser botUser = userOptional.get();
             Message savedMessage = new Message();
             savedMessage.setContent(((TextMessage) message).getText());
-            savedMessage.setUser(user);
-            savedMessage.setToken(authToken);
+            savedMessage.setBotUser(botUser);
+            savedMessage.setBotsData(botsData);
             messageRepository.save(savedMessage);
         }
 

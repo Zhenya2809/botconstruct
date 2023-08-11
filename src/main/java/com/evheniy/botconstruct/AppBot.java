@@ -1,6 +1,5 @@
 package com.evheniy.botconstruct;
 
-import com.evheniy.botconstruct.botshandler.impl.TelegramBaseUpdateHandler;
 import com.evheniy.botconstruct.chosebottype.BotStrategy;
 import com.evheniy.botconstruct.chosebottype.BotStrategyFactory;
 import com.evheniy.botconstruct.model.BotType;
@@ -25,7 +24,7 @@ import java.util.Set;
 @Slf4j
 public class AppBot {
     @Autowired
-    private UserRepository userRepository;
+    private BotUserRepository botUserRepository;
     @Autowired
     private MessageRepository messageRepository;
     @Autowired
@@ -40,7 +39,7 @@ public class AppBot {
 
 
     public void addNewBot() {
-        String tokenId = "6125153463:AAEq0IIJNvufXmitJfgiwq69V6HrXnd8ifc";
+        String tokenId = "5501249626:AAGmw9TLS2P-iYKKt7wkh0QyjPTntzQWgEo";
 //        token.setToken("5268155371:AAG3RgrkWWJoVAprsablbLDSUQRkydn2Ftc");
         Optional<BotsData> tokenByToken = allBotsRepository.findTokenByToken(tokenId);
         if (tokenByToken.isEmpty()) {
@@ -62,13 +61,13 @@ public class AppBot {
 
             //viber
             BotsData viberBot = new BotsData();
-            Command viberCommands = new Command();
-            viberCommands.setCommandText("/help");
-            viberCommands.setReplyText("чим можу допомгти?");
-            Set<Command> commanViberdSet = new HashSet<>();
+//            Command viberCommands = new Command();
+//            viberCommands.setCommandText("/help");
+//            viberCommands.setReplyText("чим можу допомгти?");
+//            Set<Command> commanViberdSet = new HashSet<>();
             telegramCommands.setBotsData(viberBot);
-            commandSet.add(viberCommands);
-            viberBot.setCommands(commanViberdSet);
+//            commandSet.add(viberCommands);
+//            viberBot.setCommands(commanViberdSet);
 
             viberBot.setBotType(BotType.VIBER);
             viberBot.setBotName("Pomoika");

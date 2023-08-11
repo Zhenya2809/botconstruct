@@ -34,13 +34,14 @@ public class BotsData {
 
     private String botAvatarUrl;
 
+    @OneToMany(mappedBy = "botsData", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Message> messages;
 
     @Override
     public String toString() {
         return "Token{" +
                 "id=" + id +
                 ", token='" + token + '\'' +
-                // Змініть наступний рядок, щоб уникнути рекурсії и
                 ", configurationBot=" + (configurationBot != null ? configurationBot.getId() : "null") +
                 '}';
     }
