@@ -25,6 +25,8 @@
         private static final String REGISTRATION_ENDPOINT = "/api/v1/auth/register";
         private static final String AUTHORIZATION_ENDPOINT = "/api/v1/auth/authenticate";
         private static final String WEBSOCKET_ENDPOINT = "/**";
+        private static final String CHATQUEUE = "/functional/active-queues";
+        private static final String LOADMESSAGES = "/functional/messages/**";
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
           httpSecurity
@@ -35,6 +37,8 @@
                   .requestMatchers(REGISTRATION_ENDPOINT).permitAll()
                   .requestMatchers(AUTHORIZATION_ENDPOINT).permitAll()
                   .requestMatchers(WEBSOCKET_ENDPOINT).permitAll()
+                  .requestMatchers(CHATQUEUE).permitAll()
+                  .requestMatchers(LOADMESSAGES).permitAll()
                   .anyRequest()
                   .authenticated()
                   .and()

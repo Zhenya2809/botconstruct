@@ -17,4 +17,8 @@ public class Command {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "botsData_id")
     private BotsData botsData;
+    @Column(columnDefinition = "TEXT") // Використовуємо TEXT для зберігання великого об'єму тексту
+    private String json; // Поле для зберігання JSON-інформації
+
+    private String typeCommand; // Поле для зберігання типу команди
 }

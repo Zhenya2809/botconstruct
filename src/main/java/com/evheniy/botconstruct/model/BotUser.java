@@ -1,5 +1,6 @@
 package com.evheniy.botconstruct.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class BotUser {
 
     private String globalState;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "botUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Message> messages;
 }

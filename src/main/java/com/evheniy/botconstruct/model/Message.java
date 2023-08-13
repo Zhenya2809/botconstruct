@@ -1,5 +1,6 @@
 package com.evheniy.botconstruct.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class Message {
     @JoinColumn(name = "bots_data_id")
     private BotsData botsData;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "botUser_id")
     private BotUser botUser;

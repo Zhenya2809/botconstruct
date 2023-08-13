@@ -3,6 +3,7 @@ package com.evheniy.botconstruct;
 import com.evheniy.botconstruct.botshandler.impl.TelegramBaseUpdateHandler;
 import com.evheniy.botconstruct.botshandler.BaseUpdateHandler;
 import com.evheniy.botconstruct.model.BotsData;
+import com.evheniy.botconstruct.repository.ChatQueueRepository;
 import com.evheniy.botconstruct.repository.CommandRepository;
 import com.evheniy.botconstruct.repository.MessageRepository;
 import com.evheniy.botconstruct.repository.BotUserRepository;
@@ -29,6 +30,7 @@ public class MyUpdatesListener implements UpdatesListener {
 
     private BotUserRepository botUserRepository;
     private MessageRepository messageRepository;
+    private ChatQueueRepository chatQueueRepository;
 
     private CommandRepository commandRepository;
     private TelegramBot bot;

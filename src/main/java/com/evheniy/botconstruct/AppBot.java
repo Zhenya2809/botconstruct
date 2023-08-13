@@ -11,6 +11,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -23,25 +24,36 @@ import java.util.Set;
 @Component
 @Slf4j
 public class AppBot {
+
+    private final SimpMessagingTemplate messagingTemplate; // Додайте це поле
+
+    @Autowired
+    public AppBot(SimpMessagingTemplate messagingTemplate) {
+        this.messagingTemplate = messagingTemplate;
+    }
+
+
     @Autowired
     private BotUserRepository botUserRepository;
     @Autowired
     private MessageRepository messageRepository;
     @Autowired
-    private AllBotsRepository allBotsRepository;
+    private BotsDataRepository botsDataRepository;
     @Autowired
     private ConfigurationBotRepository configurationBotRepository;
     @Autowired
     private CommandRepository commandRepository;
+    @Autowired
+    private ChatQueueRepository chatQueueRepository;
 
 
     private TelegramBot bot;
 
 
     public void addNewBot() {
-        String tokenId = "5501249626:AAGmw9TLS2P-iYKKt7wkh0QyjPTntzQWgEo";
+        String tokenId = "5019798670:AAHRFdhwhS8_p7xM8Xig_IsWAB2m3FjEiS8";
 //        token.setToken("5268155371:AAG3RgrkWWJoVAprsablbLDSUQRkydn2Ftc");
-        Optional<BotsData> tokenByToken = allBotsRepository.findTokenByToken(tokenId);
+        Optional<BotsData> tokenByToken = botsDataRepository.findTokenByToken(tokenId);
         if (tokenByToken.isEmpty()) {
             BotsData telegramBot = new BotsData();
 
@@ -87,7 +99,7 @@ public class AppBot {
             telegramBot.setConfigurationBot(viberConfigurationBot);
 
             viberBot.setConfigurationBot(viberConfigurationBot);
-            allBotsRepository.save(viberBot);
+            botsDataRepository.save(viberBot);
             //viber
 
 
@@ -102,7 +114,7 @@ public class AppBot {
 
             telegramBot.setConfigurationBot(telegramConfigurationBot);
 
-            allBotsRepository.save(telegramBot);
+            botsDataRepository.save(telegramBot);
 
 
         }
@@ -111,12 +123,14 @@ public class AppBot {
     @PostConstruct
     public void init() {
         addNewBot();
-        List<BotsData> all = allBotsRepository.findAll();
-        System.out.println(all);
+        List<BotsData> all = botsDataRepository.findAll();
+//        System.out.println(all);
+        log.info(Integer.toString(all.size()));
+        BotStrategyFactory botStrategyFactory = new BotStrategyFactory(messagingTemplate); // Створюємо фабрику з SimpMessagingTemplate
         for (BotsData botsData : all) {
             ConfigurationBot configBot = configurationBotRepository.findByBotsData(botsData);
             if (configBot != null) {
-                BotStrategy botStrategy = BotStrategyFactory.create(botsData.getBotType());
+                BotStrategy botStrategy = botStrategyFactory.create(botsData.getBotType()); // Використовуємо фабрику
                 botStrategy.setupBot(botsData, this);
             }
         }
