@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,6 +26,9 @@ public class BotUser {
     private String lastName;
 
     private String globalState;
+
+
+
 
     @JsonBackReference
     @OneToMany(mappedBy = "botUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

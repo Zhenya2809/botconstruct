@@ -32,9 +32,12 @@ public class TelegramBotStrategy implements BotStrategy {
         telegramUpdateHandler.setMessageRepository(appBot.getMessageRepository());
         telegramUpdateHandler.setCommandRepository(appBot.getCommandRepository());
         telegramUpdateHandler.setBot(bot);
+        telegramUpdateHandler.setBotsDataService(appBot.getBotsDataService());
         MyUpdatesListener updatesListener = new MyUpdatesListener(telegramUpdateHandler);
         updatesListener.setBot(bot);
         updatesListener.setBotsData(botsData);
+
+        updatesListener.setBotsDataService(appBot.getBotsDataService());
         updatesListener.setCommandRepository(appBot.getCommandRepository());
         updatesListener.setBotUserRepository(appBot.getBotUserRepository());
         updatesListener.setChatQueueRepository(appBot.getChatQueueRepository());

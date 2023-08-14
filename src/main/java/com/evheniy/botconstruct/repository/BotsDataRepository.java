@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface BotsDataRepository extends JpaRepository<BotsData,Long> {
-    Optional<BotsData> findTokenByToken(String token);
+    Optional<BotsData> findByToken(String token);
     @NotNull
     Optional<BotsData> findById(@NotNull Long Id);
 }

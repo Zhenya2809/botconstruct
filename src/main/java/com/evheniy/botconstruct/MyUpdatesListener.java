@@ -1,12 +1,10 @@
 package com.evheniy.botconstruct;
 
+import com.evheniy.botconstruct.Service.impl.BotsDataService;
 import com.evheniy.botconstruct.botshandler.impl.TelegramBaseUpdateHandler;
 import com.evheniy.botconstruct.botshandler.BaseUpdateHandler;
 import com.evheniy.botconstruct.model.BotsData;
-import com.evheniy.botconstruct.repository.ChatQueueRepository;
-import com.evheniy.botconstruct.repository.CommandRepository;
-import com.evheniy.botconstruct.repository.MessageRepository;
-import com.evheniy.botconstruct.repository.BotUserRepository;
+import com.evheniy.botconstruct.repository.*;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
@@ -22,21 +20,23 @@ import java.util.List;
 @NoArgsConstructor
 public class MyUpdatesListener implements UpdatesListener {
 
-    private BaseUpdateHandler baseUpdateHandler;
-
     public MyUpdatesListener(BaseUpdateHandler baseUpdateHandler) {
         this.baseUpdateHandler = baseUpdateHandler;
     }
 
+    private BaseUpdateHandler baseUpdateHandler;
+
     private BotUserRepository botUserRepository;
     private MessageRepository messageRepository;
     private ChatQueueRepository chatQueueRepository;
+    private UserRepository userRepository;
+    private BotsDataService botsDataService;
 
     private CommandRepository commandRepository;
     private TelegramBot bot;
     private BotsData botsData;
-    private TelegramBaseUpdateHandler telegramUpdateHandler;
 
+    private TelegramBaseUpdateHandler telegramUpdateHandler;
 
     @Override
     public int process(List<Update> updates) {

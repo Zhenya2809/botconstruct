@@ -1,6 +1,7 @@
 package com.evheniy.botconstruct.botshandler.impl;
 
 import com.evheniy.botconstruct.ExecutionContext;
+import com.evheniy.botconstruct.Service.impl.BotsDataService;
 import com.evheniy.botconstruct.Service.impl.TelegramReplyService;
 import com.evheniy.botconstruct.botshandler.BaseUpdateHandler;
 import com.evheniy.botconstruct.model.ChatMessage;
@@ -31,6 +32,7 @@ public class TelegramBaseUpdateHandler implements BaseUpdateHandler {
     private BotsDataRepository botsDataRepository;
 
     private ChatQueueRepository chatQueueRepository;
+    private BotsDataService botsDataService;
 
     private BotsData botsData;
 
@@ -87,7 +89,7 @@ public class TelegramBaseUpdateHandler implements BaseUpdateHandler {
                 String typeCommand = command.getTypeCommand();
                 String json = command.getJson();
 
-                CommandHandler handler = createHandler(typeCommand, commandText, replyText, json, botId,chatId);
+                CommandHandler handler = createHandler(typeCommand, commandText, replyText, json, botId, chatId);
                 commandHandlerList.add(handler);
             }
 
@@ -111,7 +113,8 @@ public class TelegramBaseUpdateHandler implements BaseUpdateHandler {
 
         return switch (typeCommand) {
             case "socialCommand" -> new SocialCommandHandler(commandText, replyText, json);
-            case "functionalCommand" -> new FunctionCommandHandler(commandText, json, botId, chatId,chatQueueRepository);
+            case "functionalCommand" ->
+                    new FunctionCommandHandler(commandText, json, botId, chatId, chatQueueRepository, botsDataService);
             default -> new ReplyCommandHandler(commandText, replyText);
         };
     }

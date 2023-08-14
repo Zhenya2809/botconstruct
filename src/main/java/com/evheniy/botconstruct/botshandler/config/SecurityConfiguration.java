@@ -27,6 +27,8 @@
         private static final String WEBSOCKET_ENDPOINT = "/**";
         private static final String CHATQUEUE = "/functional/active-queues";
         private static final String LOADMESSAGES = "/functional/messages/**";
+        private static final String GETUSERNAME = "/functional/getusername/**";
+        private static final String CREATEBOT = "/bot/**";
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
           httpSecurity
@@ -39,6 +41,8 @@
                   .requestMatchers(WEBSOCKET_ENDPOINT).permitAll()
                   .requestMatchers(CHATQUEUE).permitAll()
                   .requestMatchers(LOADMESSAGES).permitAll()
+                  .requestMatchers(GETUSERNAME).permitAll()
+                  .requestMatchers(CREATEBOT).permitAll()
                   .anyRequest()
                   .authenticated()
                   .and()

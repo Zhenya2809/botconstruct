@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ChatQueueRepository extends JpaRepository<ChatQueue,Long> {
-     List<ChatQueue> findByActiveTrue();
+     List<ChatQueue> findByActiveTrueAndUserId(Long userId);
 }

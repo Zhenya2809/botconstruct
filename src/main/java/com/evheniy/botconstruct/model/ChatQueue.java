@@ -17,4 +17,5 @@ public class ChatQueue {
     private Long chatId;
     private Long botId;
     private Boolean active;
+    private Long userId;
 }

@@ -1,7 +1,9 @@
 package com.evheniy.botconstruct.commands;
 
 import com.evheniy.botconstruct.ExecutionContext;
+import com.evheniy.botconstruct.Service.impl.BotsDataService;
 import com.evheniy.botconstruct.model.ChatQueue;
+import com.evheniy.botconstruct.model.Message;
 import com.evheniy.botconstruct.repository.ChatQueueRepository;
 
 
@@ -12,14 +14,19 @@ public class FunctionCommandHandler implements CommandHandler {
     private final Long botId;
     private final Long chatId;
     private final ChatQueueRepository chatQueueRepository; // Репозиторій для взаємодії з таблицею черги
+    private final BotsDataService botsDataService;
+
+
 
     // Конструктор, який приймає команду
-    public FunctionCommandHandler(String command, String json, Long botId, Long chatId, ChatQueueRepository chatQueueRepository) {
+    public FunctionCommandHandler(String command, String json, Long botId, Long chatId, ChatQueueRepository chatQueueRepository, BotsDataService botsDataService) {
         this.command = command;
         this.json = json;
         this.botId = botId;
         this.chatId = chatId;
         this.chatQueueRepository = chatQueueRepository;
+
+        this.botsDataService = botsDataService;
     }
 
     // Перевірка, чи обробник може обробити дану команду
@@ -32,13 +39,8 @@ public class FunctionCommandHandler implements CommandHandler {
     @Override
     public void handle(ExecutionContext context) {
         // Створення нового об'єкта ChatQueue
-        ChatQueue chatQueue = new ChatQueue();
-        chatQueue.setChatId(chatId);
-        chatQueue.setBotId(botId);
-        chatQueue.setActive(true);
+       botsDataService.saveChatQueue(chatId,botId);
 
-        // Збереження об'єкта в базі даних
-        chatQueueRepository.save(chatQueue);
     }
 
     // Повернення типу команди, може бути корисним для ідентифікації обробника

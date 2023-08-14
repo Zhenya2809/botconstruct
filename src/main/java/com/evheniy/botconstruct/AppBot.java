@@ -1,5 +1,6 @@
 package com.evheniy.botconstruct;
 
+import com.evheniy.botconstruct.Service.impl.BotsDataService;
 import com.evheniy.botconstruct.chosebottype.BotStrategy;
 import com.evheniy.botconstruct.chosebottype.BotStrategyFactory;
 import com.evheniy.botconstruct.model.BotType;
@@ -36,6 +37,8 @@ public class AppBot {
     @Autowired
     private BotUserRepository botUserRepository;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private MessageRepository messageRepository;
     @Autowired
     private BotsDataRepository botsDataRepository;
@@ -45,6 +48,8 @@ public class AppBot {
     private CommandRepository commandRepository;
     @Autowired
     private ChatQueueRepository chatQueueRepository;
+    @Autowired
+    private BotsDataService botsDataService;
 
 
     private TelegramBot bot;
@@ -53,7 +58,7 @@ public class AppBot {
     public void addNewBot() {
         String tokenId = "5019798670:AAHRFdhwhS8_p7xM8Xig_IsWAB2m3FjEiS8";
 //        token.setToken("5268155371:AAG3RgrkWWJoVAprsablbLDSUQRkydn2Ftc");
-        Optional<BotsData> tokenByToken = botsDataRepository.findTokenByToken(tokenId);
+        Optional<BotsData> tokenByToken = botsDataRepository.findByToken(tokenId);
         if (tokenByToken.isEmpty()) {
             BotsData telegramBot = new BotsData();
 
@@ -124,8 +129,7 @@ public class AppBot {
     public void init() {
         addNewBot();
         List<BotsData> all = botsDataRepository.findAll();
-//        System.out.println(all);
-        log.info(Integer.toString(all.size()));
+        log.info(all.size() + " bots are running");
         BotStrategyFactory botStrategyFactory = new BotStrategyFactory(messagingTemplate); // Створюємо фабрику з SimpMessagingTemplate
         for (BotsData botsData : all) {
             ConfigurationBot configBot = configurationBotRepository.findByBotsData(botsData);

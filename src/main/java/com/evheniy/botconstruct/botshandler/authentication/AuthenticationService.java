@@ -24,7 +24,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public ResponseEntity<?> register(RegisterRequest request) {
-        Optional<User> userByPhone = repository.findUserByPhone(request.getPhone());
+        Optional<User> userByPhone = repository.findByPhone(request.getPhone());
         if (userByPhone.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                       .body("Вибачте, але цей номер телефону вже зареєстрований в нашій системі. " +

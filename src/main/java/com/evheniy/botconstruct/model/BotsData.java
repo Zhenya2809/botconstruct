@@ -37,6 +37,10 @@ public class BotsData {
     @OneToMany(mappedBy = "botsData", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Message> messages;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Override
     public String toString() {
         return "Token{" +

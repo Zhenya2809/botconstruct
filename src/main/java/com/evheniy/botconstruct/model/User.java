@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 
 //@EqualsAndHashCode(callSuper = true)
@@ -38,11 +39,9 @@ public class User implements UserDetails, CredentialsContainer {
     @Column(name = "password")
     private String password;
 
-    //    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-//    @JoinTable(name = "user_roles",
-//            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-//            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
-//    private List<Role> roles;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<BotsData> bots;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
