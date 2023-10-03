@@ -1,6 +1,8 @@
 package com.evheniy.botconstruct.Service.impl;
 
 import com.evheniy.botconstruct.model.*;
+import com.evheniy.botconstruct.model.dto.BotsDataDto;
+import com.evheniy.botconstruct.model.dto.UserDto;
 import com.evheniy.botconstruct.repository.BotsDataRepository;
 import com.evheniy.botconstruct.repository.ChatQueueRepository;
 import com.evheniy.botconstruct.repository.UserRepository;
@@ -51,6 +53,18 @@ public class BotsDataService {
 
     }
 
+    public List<BotsDataDto> findUserBots() {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<User> userByPhone = userRepository.findUserByPhone(name);
+        if (userByPhone.isPresent()) {
+            User user = userByPhone.get();
+            UserDto userDto = UserDto.fromUser(user);
+            List<BotsData> botsDataList = botsDataRepository.findAllByUser(user);
+            return BotsDataDto.fromBotsDataList(botsDataList);
+        } else
+            return Collections.emptyList();
+    }
+
     public List<ChatQueue> getActiveChatQueues() {
 
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -72,6 +86,7 @@ public class BotsDataService {
         byId.ifPresent(botsData -> chatQueue.setUserId(botsData.getUser().getId()));
         chatQueueRepository.save(chatQueue);
     }
+
     public void sendMessageToUser(String messageText, String botId, String chatId) {
         Optional<BotsData> byId = botsDataRepository.findById(Long.valueOf(botId));
         if (byId.isPresent()) {
